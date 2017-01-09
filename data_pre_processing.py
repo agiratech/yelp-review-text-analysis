@@ -1,24 +1,10 @@
 import json, re
+from Read_and_write import read_and_write_data
 from nltk.tokenize import word_tokenize
 
-class Read_Data:
-
-  def read_topics(self, infile):
-    topics = []
-    topic = []
-    f = open(infile, 'r')
-    for line in f:
-      line = line.strip()
-      if line != "":
-        topic.append(line)
-      else:
-        topics.append(topic)
-        topic = []
-    topics.append(topic)
-    return topics
+rwd = read_and_write_data.Read_Data()
 
 class Preprocessing:
-
 
   # Underscores multiword topics and optionally removes words
   # in size-n window around topics to increase conditional independence
@@ -27,7 +13,7 @@ class Preprocessing:
   def process_anchors(self, infile, topicfile, window_size=0):
     outfile = infile.replace("selected_", "bigram_")
 
-    topics = Read_Data().read_topics(topicfile)
+    topics = rwd.read_topics(topicfile)
     topic_list = []
     for topic in topics:
       for a in topic:
