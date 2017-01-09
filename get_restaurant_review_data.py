@@ -5,7 +5,7 @@ class Get_restaurant_reviews:
 
   def get_review_file(self, restaurant_bIds, path, review_flag):
     infile = path+'/yelp_academic_dataset_review.json'
-    outfile = path+'/restaurant_selected_review.json'
+    outfile = '(restaurant)selected_review.json'
     reviews_count = 0
     with open(path+'/yelp_academic_dataset_review.json') as json_data, open(outfile,'w') as file:
       for line in json_data:
