@@ -3,10 +3,10 @@ import json, os
 business_file = 'data_files/yelp_academic_dataset_business.json'
 review_file = 'data_files/yelp_academic_dataset_review.json'
 business_review_file = 'data_files/test_data.json'
-city = "Phoenix"
-category = "Mexican"
 max_business_records = 5
 max_review_records = 10
+city = "Phoenix"
+category = "Mexican"
 business_records = []
 
 with open(business_file) as json_data:
