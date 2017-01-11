@@ -1,6 +1,7 @@
 import json, re
 from Read_and_write import read_and_write_data
 from nltk.tokenize import word_tokenize
+from collections import Counter
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from collections import Counter
