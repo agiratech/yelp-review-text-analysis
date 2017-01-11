@@ -1,11 +1,11 @@
 import json, re
 from Read_and_write import read_and_write_data
 from nltk.tokenize import word_tokenize
-from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.corpus import stopwords
+from nltk.stem.porter import PorterStemmer
 
+stemmer = PorterStemmer()
 rwd = read_and_write_data.Read_Data()
-lmtzr = WordNetLemmatizer()
 stop_words = set(stopwords.words('english'))
 
 class Preprocessing:
@@ -45,7 +45,7 @@ class Preprocessing:
               review = " ".join(review[:ind-window_size]+[word]+review[(ind+1)+window_size:])
 
         # data["text"] = review
-        data["text"] = " ".join([lmtzr.lemmatize(i) for i in review.split() if i not in stop_words])
+        data["text"] = " ".join([stemmer.stem(i) for i in review.split() if i not in stop_words])
         json.dump({'business_id':data['business_id'],  'user_id': data['user_id'], 'stars':data['stars'], 'text':data['text']}, newfile, ensure_ascii=True)
         newfile.write('\n')
 
