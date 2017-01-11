@@ -3,6 +3,7 @@ from Read_and_write import read_and_write_data
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
+from collections import Counter
 
 stemmer = PorterStemmer()
 rwd = read_and_write_data.Read_Data()
@@ -14,7 +15,7 @@ class Preprocessing:
   # in size-n window around topics to increase conditional independence
   # of topics and the text.  Default window size is 0
 
-  def process_anchors(self, infile, topicfile, window_size=0):
+  def process_topics(self, infile, topicfile, window_size=0):
     outfile = infile.replace("selected_", "bigram_")
 
     topics = rwd.read_topics(topicfile)
@@ -50,3 +51,44 @@ class Preprocessing:
         newfile.write('\n')
 
     return outfile
+
+  '''
+  Builds the dictionary that maps features in the bag of words feature vectors to the words they represent
+  Verbose is set to True as a default, which prints the number of reviews processed on every hundreth one.
+  '''
+  def write_dictionary(self, infile, outfile, verbose=True):
+    f = open(infile, 'r')
+    words = []
+    i = 0
+    for line in f:
+      line = json.loads(json.loads(line))['text']
+      text = word_tokenize(line)
+      words = words + list(set(text))
+
+      if verbose and i%100 == 0:
+        print i
+      i += 1
+
+    f.close()
+
+    word_counts = Counter(words)
+    words = [k for k, v in word_counts.items() if v >= 50]
+
+    f = open(outfile, 'w')
+    for word in words:
+      f.write(word.encode('utf-8') + "\n")
+
+    f.close()
+
+  '''
+  Reviews are partitioned into 2 groups, 1 and 0(y-label)
+      1 - if star rating>=4
+      0 - if otherwise
+  Each review text is converted to a feature vector of the size of words in the dictionary
+  For each word in dictionary:
+      1 - if word appears in the review
+      0 - if otherwise
+  Format: [label, feature_vector]
+      all elements are separated by " "
+  Verbose is set to True as a default, which prints the number of reviews processed on every hundreth one.
+  '''
