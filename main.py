@@ -9,14 +9,20 @@ pr = pr.Partition_Reviews()
 path = "data_files"
 city = "Phoenix"
 category = "Mexican"
-topic = "topic.txt"
+topicfile = "topic.txt"
 indexfile = "indices.txt"
+dictfile = "dictionary.txt"
 
-dataFile = rd.get_restaurant_reviews(path, city, category, True, True)
-dataFile = dpp.process_anchors(dataFile, topic)
-print "555555", dataFile
+datafile = rd.get_restaurant_reviews(path, city, category, True, True)
+datafile = dpp.process_topics(datafile, topicfile)
+print "555555", datafile
 
-num_reviews = pr.count_reviews(dataFile)
+num_reviews = pr.count_reviews(datafile)
 pr.generate_set_indices(num_reviews)
-print "6666666", dataFile
-pr.partition_reviews(dataFile, indexfile)
+print "6666666", datafile
+pr.partition_reviews(datafile, indexfile)
+
+trainfile = 'train'+datafile[datafile.index('_'):]
+validatefile = 'validate'+datafile[datafile.index('_'):]
+
+dpp.write_dictionary(trainfile, dictfile)
