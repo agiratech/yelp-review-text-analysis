@@ -1,10 +1,12 @@
-import get_restaurant_review_data as rd
-import data_pre_processing as dpp
+import get_restaurant_review_data as rrd
+import data_pre_processing as dp
 import partition_reviews as pr
 
-rd = rd.Get_restaurant_reviews()
-dpp = dpp.Preprocessing()
+rrd = rrd.Get_restaurant_reviews()
+dpp = dp.Preprocessing()
 pr = pr.Partition_Reviews()
+topic = dp.Topics()
+rd = dp.Read_Data()
 
 path = "data_files"
 city = "Phoenix"
@@ -13,7 +15,7 @@ topicfile = "topic.txt"
 indexfile = "indices.txt"
 dictfile = "dictionary.txt"
 
-datafile = rd.get_restaurant_reviews(path, city, category, True, True)
+datafile = rrd.get_restaurant_reviews(path, city, category, True, True)
 datafile = dpp.process_topics(datafile, topicfile)
 print "555555", datafile
 
@@ -29,3 +31,5 @@ dpp.write_dictionary(trainfile, dictfile)
 
 trainfile = dpp.write_features(trainfile, dictfile)
 validatefile = dpp.write_features(validatefile, dictfile)
+
+topic.write_topic_features(trainfile, validatefile, dictfile, topicfile)
