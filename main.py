@@ -26,3 +26,6 @@ trainfile = 'train'+datafile[datafile.index('_'):]
 validatefile = 'validate'+datafile[datafile.index('_'):]
 
 dpp.write_dictionary(trainfile, dictfile)
+
+trainfile = dpp.write_features(trainfile, dictfile)
+validatefile = dpp.write_features(validatefile, dictfile)

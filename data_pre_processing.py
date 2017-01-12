@@ -93,3 +93,49 @@ class Preprocessing:
       all elements are separated by " "
   Verbose is set to True as a default, which prints the number of reviews processed on every hundreth one.
   '''
+  def write_features(self, infile, dictfile, binary=True, cutoff=4, verbose=True):
+    outfile = infile.replace("_review.json", "_features.txt")
+
+    f = open(dictfile, 'r')
+    words = []
+    for line in f:
+      words.append(line.strip())
+    f.close()
+
+    f = open(infile, 'r')
+    reviews = []
+    for line in f:
+      reviews.append(line)
+    f.close()
+
+    f = open(outfile, 'w')
+    i = 0
+    for review in reviews:
+      review = json.loads(json.loads(review))
+
+      if binary:
+        if review['stars'] >= cutoff:
+          f.write("1")
+        else:
+          f.write("0")
+        f.write(" ")
+      else:
+        f.write(str(review['stars']) + " ")
+
+      review = review['text'].encode('utf-8')
+      review = review.split()
+      for word in words:
+        if word in review:
+          f.write("1")
+        else:
+          f.write("0")
+        f.write(" ")
+      f.write("\n")
+
+      if verbose and i%100 == 0:
+        print i
+      i += 1
+
+    f.close()
+
+    return outfile
