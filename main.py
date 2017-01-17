@@ -1,12 +1,14 @@
+import numpy as np
 import get_restaurant_review_data as rrd
+from Read_and_write import read_and_write_data as rwd
 import data_pre_processing as dp
 import partition_reviews as pr
 
 rrd = rrd.Get_restaurant_reviews()
 dpp = dp.Preprocessing()
 pr = pr.Partition_Reviews()
-topic = dp.Topics()
-rd = dp.Read_Data()
+topic = rwd.Write_topics()
+rd = rwd.Read_Data()
 
 path = "data_files"
 city = "Phoenix"
@@ -33,3 +35,13 @@ trainfile = dpp.write_features(trainfile, dictfile)
 validatefile = dpp.write_features(validatefile, dictfile)
 
 topic.write_topic_features(trainfile, validatefile, dictfile, topicfile)
+
+train_a = rd.read_features('train_topic_features.txt')
+train_a_feats = np.array(train_a[0])
+train_a_labels = np.array(train_a[1])
+
+validate_a = rd.read_features('validate_topic_features.txt')
+validate_a_feats = np.array(validate_a[0])
+validate_a_labels = np.array(validate_a[1])
+
+print "topic features done"
